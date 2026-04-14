@@ -1,0 +1,21 @@
+GET http://localhost:4004/Service/AnkitCAPService/Books?$filter=Stocks gt 25
+
+
+
+###
+
+GET http://localhost:4004/Service/AnkitCAPService/Author?$expand=books
+
+
+###
+
+POST http://localhost:4004/Service/AnkitCAPService/Books
+Content-Type: application/json
+
+{
+      "Title": "Baba BlackSheep",
+      "Description": "baba Black Sheep in Action",
+      "Price": 1000,
+      "Stocks": 50,
+      "author_ID": "700fd3a6-5d3d-49f5-bb3f-2935d50ebda4"
+}

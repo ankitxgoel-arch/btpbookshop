@@ -1,0 +1,105 @@
+_schema-version: 3.3.0
+ID: AnkitCAP
+version: 1.0.0
+description: "A simple CAP project."
+parameters:
+  enable-parallel-deployments: true
+  deploy_mode: html5-repo
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+modules:
+  - name: AnkitCAP-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      instances: 1
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm-ci
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: AnkitCAP-auth
+      - name: AnkitCAP-db
+      - name: AnkitCAP-messaging
+      - name: AnkitCAP-connectivity
+      - name: AnkitCAP-destination
+      - name: AnkitCAP-logging
+
+  - name: AnkitCAP-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: AnkitCAP-db
+
+  - name: AnkitCAP-app-deployer
+    type: com.sap.application.content
+    path: gen
+    build-parameters:
+      build-result: app/
+      requires:
+    requires:
+      - name: AnkitCAP-auth
+      - name: srv-api
+      - name: AnkitCAP-html5-repo-host
+        parameters:
+          content-target: true
+          config:
+            HTML5Runtime_enabled: true
+
+resources:
+  - name: AnkitCAP-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: AnkitCAP-${org}-${space}
+        tenant-mode: dedicated
+        oauth2-configuration:
+          credential-types:
+            - "binding-secret"
+            - "x509"
+    processed-after:
+      - AnkitCAP-messaging
+  - name: AnkitCAP-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hana-free
+  - name: AnkitCAP-messaging
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: enterprise-messaging
+      service-plan: default
+      path: ./event-mesh.json
+  - name: AnkitCAP-connectivity
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: connectivity
+      service-plan: lite
+  - name: AnkitCAP-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+
+  - name: AnkitCAP-html5-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+  - name: AnkitCAP-logging
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: application-logs
+      service-plan: lite

@@ -1,0 +1,6 @@
+ID,Title,Description,Price,Stocks,Author_ID
+6dfd2e10-9bb8-4b23-ad79-1d8238b4ddaf,Spider Man,Spider Man in Action,100,10,700fd3a6-5d3d-49f5-bb3f-2935d50ebda4
+d3501f37-bbaa-4d5a-a153-f9c5cfa97c48,Iron Man,Iron Man in Action,200,20,700fd3a6-5d3d-49f5-bb3f-2935d50ebda4
+dee891d5-8a7a-41ae-9bfc-a0119d2e60db,Ant Man,Ant Man in Action,300,30,700fd3a6-5d3d-49f5-bb3f-2935d50ebda4
+b2792a80-9241-4d91-9def-00a03c8bfdeb,Panther Man,Panther Man in Action,400,40,700fd3a6-5d3d-49f5-bb3f-2935d50ebda4
+2c009da0-f2ac-49c7-a004-9c263c162c93,Galaxy Man,Galaxy Man in Action,500,50,700fd3a6-5d3d-49f5-bb3f-2935d50ebda4
