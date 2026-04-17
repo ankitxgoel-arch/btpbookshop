@@ -1,6 +1,25 @@
 const { data } = require("@sap/cds/lib/dbs/cds-deploy")
+module.exports = function (){
+    this.on("getstock","Books",function() {
+        return 100;
+    });
 
-module.exports = function() {
+    this.on("addStock", "Books", async function(req) {
+        let book = await SELECT.one.from("Books").where({ ID: req.params[0].ID });
+    
+        if (!book) {
+            req.error("Book not found");
+            return;
+        }
+
+        console.log("Updating quantity for ", book);
+
+        book.stock += req.data.quantity;
+
+        await UPDATE("Books").set({ stock: book.stock }).where({ ID: req.params[0].ID });
+        return book;
+    });
+
     this.before ("CREATE", "Books", function(req) {
         console.log (req.data)
         if (req.data.Stocks < 100)
