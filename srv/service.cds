@@ -3,7 +3,7 @@ using { AnkitCAP as my } from '../db/schema.cds';
 @path : '/service/AnkitCAPService'
 service AnkitCAPService
 {
-    entity Books as projection on my.Books actions {
+        entity Books as projection on my.Books actions{
     function getStock() returns Integer;
     action addStock(quantity : Integer) returns Books;
     };

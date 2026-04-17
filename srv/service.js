@@ -1,6 +1,6 @@
 const { data } = require("@sap/cds/lib/dbs/cds-deploy")
 module.exports = function (){
-    this.on("getstock","Books",function() {
+    this.on("getStock","Books",function() {
         return 100;
     });
 
