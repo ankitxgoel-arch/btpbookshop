@@ -16,7 +16,7 @@ module.exports = function (){
 
         book.stock += req.data.quantity;
 
-        await UPDATE("Books").set({ stock: book.stock }).where({ ID: req.params[0].ID });
+        await UPDATE("Books").set({ Stocks: book.stock }).where({ ID: req.params[0].ID });
         return book;
     });
 
